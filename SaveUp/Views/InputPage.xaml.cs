@@ -1,4 +1,5 @@
 using Microsoft.Maui.Controls;
+using SaveUp.ViewModels;
 
 namespace SaveUp.Views
 {
@@ -7,6 +8,7 @@ namespace SaveUp.Views
         public InputPage()
         {
             InitializeComponent();
+            BindingContext = new InputPageViewModel();
         }
     }
 }

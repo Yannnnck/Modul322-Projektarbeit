@@ -1,13 +1,17 @@
-﻿namespace SaveUp
+﻿using SaveUp.Views;
+
+namespace SaveUp
 {
     public partial class App : Application
     {
         public App()
         {
             InitializeComponent();
-
-            // Setze die Shell als MainPage
-            MainPage = new AppShell();
+        }
+        protected override Window CreateWindow(IActivationState? activationState)
+        {
+            var window = new Window(new AppShell()); // Verwende AppShell anstelle von HomePage
+            return window;
         }
     }
 }

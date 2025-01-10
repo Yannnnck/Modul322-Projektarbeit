@@ -79,7 +79,6 @@
 	  <Folder Include="Platforms\Android\Resources\mipmap-xxhdpi\" />
 	  <Folder Include="Platforms\Android\Resources\mipmap-xxxhdpi\" />
 	  <Folder Include="Resources\Splash\" />
-	  <Folder Include="ViewModels\" />
 	</ItemGroup>
 
 	<ItemGroup>
