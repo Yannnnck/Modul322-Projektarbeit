@@ -17,12 +17,60 @@
         <vm:HomePageViewModel/>
     </ContentPage.BindingContext>
 
-    <StackLayout>
-        <Label Text="Welcome to the Home Page!"
+    <Grid>
+        <!-- Definiere 3 Spalten -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="10*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Definiere 7 Zeilen -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="130" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="130" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="130" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="130" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Image Source="appicon_homepage.png"
+               Grid.Row="1" Grid.Column="1"
                HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
-        <Label Text="coming soon"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
-    </StackLayout>
+               VerticalOptions="Center"
+               HeightRequest="250"
+               WidthRequest="250" />
+
+        <Label Text="Willkommen bei SaveUp"
+               Grid.Row="3" Grid.Column="1"
+               FontSize="24"
+               FontAttributes="Bold" />
+
+        <Label Text="Verwalte deine Finanzen einfach und effizient"
+               Grid.Row="4" Grid.Column="1"
+               FontSize="18" />
+
+        <Label Text="Deine aktuellen Ausgaben:"
+               Grid.Row="5" Grid.Column="1"
+               FontSize="20"
+               FontAttributes="Bold" />
+
+        <Label Text="Schau dir deine Ausgaben und Einnahmen an"
+               Grid.Row="6" Grid.Column="1"
+               FontSize="18" />
+
+        <Label Text="Klicke unten, um loszulegen!"
+               Grid.Row="7" Grid.Column="1"
+               FontSize="20"
+               FontAttributes="Bold" />
+
+        <Label Text="Dein Weg zu finanzieller Freiheit beginnt hier."
+               Grid.Row="8" Grid.Column="1"
+               FontSize="18"
+               FontAttributes="Bold" />
+    </Grid>
 </ContentPage>
