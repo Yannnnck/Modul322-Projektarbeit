@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaveUp.ViewModels"
+             x:Class="SaveUp.Views.StatisticsPage"
+             x:DataType="vm:StatisticsPageViewModel"
+             Title="{Binding PageTitle}">
+
+    <Shell.TitleView>
+        <Label Text="{Binding PageTitle}"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               FontSize="25"
+               FontAttributes="Bold"/>
+    </Shell.TitleView>
+    <ContentPage.BindingContext>
+        <vm:StatisticsPageViewModel />
+    </ContentPage.BindingContext>
+    <ScrollView>
+
+    </ScrollView>
+</ContentPage>

@@ -1,5 +1,6 @@
 using Microsoft.Maui.Controls;
 using SaveUp.ViewModels;
+using SaveUp.Models;
 
 namespace SaveUp.Views
 {

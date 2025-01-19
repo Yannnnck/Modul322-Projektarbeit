@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaveUp.ViewModels"
+             xmlns:models="clr-namespace:SaveUp.Models"
              x:Class="SaveUp.Views.InputPage"
              x:DataType="vm:InputPageViewModel"
              Title="{Binding PageTitle}">
@@ -13,16 +14,48 @@
                FontSize="25"
                FontAttributes="Bold"/>
     </Shell.TitleView>
+
     <ContentPage.BindingContext>
         <vm:InputPageViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout>
-        <Label Text="Welcome to the Input Page"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
-        <Label Text="coming soon"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
-    </StackLayout>
+    <ContentPage.Content>
+        <Grid Padding="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Produktname, Preis und Kommentar mit Box -->
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Stroke="#0747C4" StrokeThickness="2" Padding="10" BackgroundColor="#2B2B2B">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <VerticalStackLayout>
+                    <!-- Produktname und Preis -->
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto" Margin="0,0,0,10">
+                        <Entry Placeholder="Produktname" Text="{Binding ProductName}" Grid.Column="0" WidthRequest="200" HorizontalOptions="Start"/>
+                        <Entry Placeholder="0.00 CHF" Text="{Binding Price}" Keyboard="Numeric" Grid.Column="1" WidthRequest="100" HorizontalOptions="End" />
+                    </Grid>
+
+                    <!-- Kommentar -->
+                    <Editor Placeholder="Kommentar" Text="{Binding Comment}" HeightRequest="150" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Abbrechen und Bestätigen -->
+            <HorizontalStackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Spacing="30" HorizontalOptions="Center">
+                <Button Text="Abbrechen" Command="{Binding ClearCommand}" BackgroundColor="Red" TextColor="White" WidthRequest="120" />
+                <Button Text="Bestätigen" Command="{Binding SaveCommand}" BackgroundColor="Green" TextColor="White" WidthRequest="120" />
+            </HorizontalStackLayout>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

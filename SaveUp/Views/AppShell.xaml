@@ -17,6 +17,9 @@
         <Tab Title="List" Icon="list_icon.png">
             <ShellContent ContentTemplate="{DataTemplate views:ListPage}" />
         </Tab>
+        <Tab Title="Statistics" Icon="statistics_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate views:StatisticsPage}" />
+        </Tab>
         <Tab Title="Settings" Icon="settings_icon.png">
             <ShellContent ContentTemplate="{DataTemplate views:SettingsPage}" />
         </Tab>

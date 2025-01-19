@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaveUp.ViewModels"
+             xmlns:models="clr-namespace:SaveUp.Models"
              x:Class="SaveUp.Views.ListPage"
              x:DataType="vm:ListPageViewModel"
              Title="{Binding PageTitle}">
@@ -13,16 +14,144 @@
                FontSize="25"
                FontAttributes="Bold"/>
     </Shell.TitleView>
+
     <ContentPage.BindingContext>
         <vm:ListPageViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout>
-        <Label Text="Welcome to the list Page!"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
-        <Label Text="coming soon"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
-    </StackLayout>
+    <ContentPage.Content>
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Filterleiste -->
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,10">
+                <Entry Grid.Column="0"
+                       Placeholder="Suche..." 
+                       Text="{Binding SearchText}" 
+                       BackgroundColor="#2B2B2B" 
+                       TextColor="White"
+                       PlaceholderColor="Gray"
+                       VerticalOptions="Center" />
+                <DatePicker Grid.Column="1"
+                            Date="{Binding StartDate}" 
+                            BackgroundColor="#2B2B2B" 
+                            TextColor="White"
+                            Margin="5,0"
+                            HorizontalOptions="End" />
+                <DatePicker Grid.Column="2"
+                            Date="{Binding EndDate}" 
+                            BackgroundColor="#2B2B2B" 
+                            TextColor="White"
+                            Margin="5,0"
+                            HorizontalOptions="End" />
+            </Grid>
+
+            <!-- Produktliste -->
+            <CollectionView Grid.Row="1" ItemsSource="{Binding FilteredProducts}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Product">
+                        <!-- Abgerundeter Rahmen für SwipeView -->
+                        <Border Stroke="#0747C4" StrokeThickness="1" BackgroundColor="#2B2B2B" Margin="0,0,0,10">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10" />
+                            </Border.StrokeShape>
+
+                            <!-- Nur SwipeView anzeigen, wenn es keine Windows-Plattform ist -->
+                            <OnPlatform x:TypeArguments="View">
+                                <On Platform="iOS, Android">
+                                    <SwipeView BackgroundColor="Transparent">
+                                        <!-- Hintergrund des SwipeView auf Transparent setzen -->
+                                        <SwipeView.RightItems>
+                                            <SwipeItems Mode="Execute">
+                                                <SwipeItem Text="Löschen"
+                                                           BackgroundColor="Red"
+                                                           Command="{Binding BindingContext.DeleteProductWithAnimationCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                           CommandParameter="{Binding}">
+                                                    <SwipeItem.IconImageSource>
+                                                        <FontImageSource Glyph="🗑" Size="20" />
+                                                    </SwipeItem.IconImageSource>
+                                                </SwipeItem>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+
+                                        <!-- Inhalt des SwipeView -->
+                                        <Border Stroke="#0747C4" StrokeThickness="1" Padding="0" BackgroundColor="#2B2B2B" Margin="-1">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                            <Grid ColumnDefinitions="*,Auto" BackgroundColor="#2B2B2B">
+                                                <!-- Sicherstellen, dass der Inhalt einen Hintergrund hat -->
+                                                <!-- Linker Bereich mit Produktdetails -->
+                                                <VerticalStackLayout Grid.Column="0" Spacing="5" Padding="10">
+                                                    <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White" />
+                                                    <Label Text="{Binding Comment}" FontSize="12" TextColor="Gray" />
+                                                    <Label Text="{Binding Price, StringFormat='CHF {0:F2}'}" FontAttributes="Bold" HorizontalOptions="End" TextColor="White" />
+                                                </VerticalStackLayout>
+
+                                                <!-- Rechter Bereich mit zusätzlichem Löschen-Button -->
+                                                <Border Grid.Column="1" Stroke="Red" StrokeThickness="2" BackgroundColor="Red" VerticalOptions="Fill" HorizontalOptions="End" Margin="5,0,1,0">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="8" />
+                                                    </Border.StrokeShape>
+                                                    <Button Text="🗑" 
+                                                            Command="{Binding BindingContext.DeleteProductWithAnimationCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                                                            CommandParameter="{Binding}" 
+                                                            BackgroundColor="Transparent" 
+                                                            TextColor="White" />
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </SwipeView>
+                                </On>
+                                <On Platform="WinUI">
+                                    <!-- Inhalt der Windows Anzeige -->
+                                    <Border Stroke="#0747C4" StrokeThickness="1" Padding="0" BackgroundColor="#2B2B2B" Margin="-1">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <Grid ColumnDefinitions="*,Auto" BackgroundColor="#2B2B2B">
+                                            <!-- Sicherstellen, dass der Inhalt einen Hintergrund hat -->
+                                            <!-- Linker Bereich mit Produktdetails -->
+                                            <VerticalStackLayout Grid.Column="0" Spacing="5" Padding="10">
+                                                <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White" />
+                                                <Label Text="{Binding Comment}" FontSize="12" TextColor="Gray" />
+                                                <Label Text="{Binding Price, StringFormat='CHF {0:F2}'}" FontAttributes="Bold" HorizontalOptions="End" TextColor="White" />
+                                            </VerticalStackLayout>
+
+                                            <!-- Rechter Bereich mit zusätzlichem Löschen-Button -->
+                                            <Border Grid.Column="1" Stroke="Red" StrokeThickness="2" BackgroundColor="Red" VerticalOptions="Fill" HorizontalOptions="End" Margin="5,0,1,0">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Button Text="🗑" 
+                                                            Command="{Binding BindingContext.DeleteProductWithAnimationCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                                                            CommandParameter="{Binding}" 
+                                                            BackgroundColor="Transparent" 
+                                                            TextColor="White" />
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </On>
+                            </OnPlatform>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Gesamtsumme und Löschen -->
+            <VerticalStackLayout Grid.Row="2" Spacing="10">
+                <Label Text="{Binding TotalSum, StringFormat='Gesamtsumme: CHF {0:F2}'}" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" />
+                <Button Text="Liste löschen" 
+                        Command="{Binding ClearListCommand}" 
+                        BackgroundColor="Red" 
+                        TextColor="White" />
+            </VerticalStackLayout>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>
