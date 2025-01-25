@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using SaveUp.Models;
+using System.IO;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
+using SaveUp.Models;
 using SaveUp.Services;
 
 namespace SaveUp.Services
@@ -19,40 +17,59 @@ namespace SaveUp.Services
 
         public event EventHandler ProductsChanged = delegate { };
 
-        private static readonly string FilePath;
-
-        static SharedData()
-        {
-            var filePathProvider = Microsoft.Maui.Controls.DependencyService.Get<IFilePathProvider>();
-            FilePath = Path.Combine(filePathProvider.GetAppDataDirectory(), "SavedProducts.json");
-        }
+        private readonly string FilePath;
 
         private SharedData()
         {
+            // Initialisiere FilePath über Dependency Injection
+            var services = IPlatformApplication.Current?.Services;
+            if (services == null)
+            {
+                throw new InvalidOperationException("Die Dienste von IPlatformApplication sind nicht verfügbar.");
+            }
+
+            var filePathProvider = services.GetService<IFilePathProvider>();
+            if (filePathProvider == null)
+            {
+                throw new InvalidOperationException("IFilePathProvider wurde nicht registriert.");
+            }
+
+            FilePath = Path.Combine(filePathProvider.GetAppDataDirectory(), "SavedProducts.json");
+
+            // Stelle sicher, dass das Verzeichnis existiert
+            var directory = Path.GetDirectoryName(FilePath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
             LoadProducts();
             Products.CollectionChanged += (s, e) => OnProductsChanged();
         }
 
         private void LoadProducts()
         {
-            if (File.Exists(FilePath))
+            if (!File.Exists(FilePath)) return;
+
+            try
             {
-                try
+                var json = File.ReadAllText(FilePath);
+                var products = JsonSerializer.Deserialize<ObservableCollection<Product>>(json);
+                if (products != null)
                 {
-                    var json = File.ReadAllText(FilePath);
-                    var products = JsonSerializer.Deserialize<ObservableCollection<Product>>(json);
-                    if (products != null)
+                    foreach (var product in products)
                     {
-                        foreach (var product in products)
-                        {
-                            Products.Add(product);
-                        }
+                        Products.Add(product);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Fehler beim Laden der Produkte: {ex.Message}");
-                }
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"JSON-Fehler beim Laden der Produkte: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unerwarteter Fehler beim Laden der Produkte: {ex.Message}");
             }
         }
 
@@ -60,12 +77,19 @@ namespace SaveUp.Services
         {
             try
             {
-                var json = JsonSerializer.Serialize(Products);
+                var json = JsonSerializer.Serialize(Products, new JsonSerializerOptions
+                {
+                    WriteIndented = true // Macht die JSON-Datei lesbarer
+                });
                 File.WriteAllText(FilePath, json);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine($"Keine Berechtigung zum Speichern der Produkte: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Fehler beim Speichern der Produkte: {ex.Message}");
+                Console.WriteLine($"Unerwarteter Fehler beim Speichern der Produkte: {ex.Message}");
             }
         }
 

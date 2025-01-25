@@ -1,15 +1,20 @@
 ﻿using SaveUp.Services;
-using System.Linq;
 using Foundation;
+using System.Linq;
 
-[assembly: Microsoft.Maui.Controls.Dependency(typeof(SaveUp.Platforms.iOS.FilePathProvider))]
 namespace SaveUp.Platforms.iOS
 {
     public class FilePathProvider : IFilePathProvider
     {
         public string GetAppDataDirectory()
         {
-            return NSFileManager.DefaultManager.GetUrls(NSSearchPathDirectory.ApplicationSupportDirectory, NSSearchPathDomain.User).FirstOrDefault()?.Path ?? "";
+            var path = NSFileManager.DefaultManager.GetUrls(NSSearchPathDirectory.ApplicationSupportDirectory, NSSearchPathDomain.User)
+                .FirstOrDefault()?.Path;
+
+            if (path == null)
+                throw new InvalidOperationException("Der AppData-Pfad konnte nicht abgerufen werden.");
+
+            return Path.Combine(path, "SaveUp");
         }
     }
 }

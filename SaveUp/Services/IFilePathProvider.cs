@@ -11,4 +11,3 @@ namespace SaveUp.Services
         string GetAppDataDirectory();
     }
 }
-
