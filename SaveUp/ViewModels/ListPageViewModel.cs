@@ -153,7 +153,6 @@ namespace SaveUp.ViewModels
                 if (confirm)
                 {
                     // Animation oder andere visuelle Effekte hier ausführen
-                    await ShowMessage($"Produkt {product.Name} wird gelöscht...");
 
                     // Produkt löschen
                     Products.Remove(product);

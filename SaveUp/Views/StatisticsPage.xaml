@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaveUp.ViewModels"
+             xmlns:models="clr-namespace:SaveUp.Models"
              x:Class="SaveUp.Views.StatisticsPage"
              x:DataType="vm:StatisticsPageViewModel"
              Title="{Binding PageTitle}">
@@ -13,10 +14,140 @@
                FontSize="25"
                FontAttributes="Bold"/>
     </Shell.TitleView>
+
     <ContentPage.BindingContext>
         <vm:StatisticsPageViewModel />
     </ContentPage.BindingContext>
-    <ScrollView>
 
-    </ScrollView>
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
+                <!-- Auswahl von Jahr und Monat -->
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,20,Auto" HorizontalOptions="Center">
+                    <!-- Label für Jahr -->
+                    <OnPlatform x:TypeArguments="View">
+                        <On Platform="iOS, Android">
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Margin="-5,0,0,4"
+                                   Text="Jahr"
+                                   TextColor="White"
+                                   FontSize="Medium"
+                                   HorizontalOptions="Center" />
+                        </On>
+                    </OnPlatform>
+                    <Picker Grid.Row="1" Grid.Column="0"
+                            Title="Jahr"
+                            TextColor="White"
+                            ItemsSource="{Binding AvailableYears}" 
+                            SelectedItem="{Binding SelectedYear}" />
+
+                    <!-- Label für Monat -->
+                    <OnPlatform x:TypeArguments="View">
+                        <On Platform="iOS, Android">
+                            <Label Grid.Row="0" Grid.Column="2"
+                                   Margin="0,0,0,4"
+                                   Text="Monat"
+                                   TextColor="White"
+                                   FontSize="Medium"
+                                   HorizontalOptions="Center" />
+                        </On>
+                    </OnPlatform>
+                    <Picker Grid.Row="1" Grid.Column="2"
+                            Title="Monat"
+                            TextColor="White"
+                            ItemsSource="{Binding AvailableMonths}" 
+                            SelectedItem="{Binding SelectedMonth}" />
+                </Grid>
+
+                <!-- Balkendiagramm -->
+                <ScrollView Orientation="Horizontal">
+                    <CollectionView ItemsSource="{Binding ChartData}" ItemsLayout="HorizontalList" HeightRequest="320">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:ChartData">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="Center" RowDefinitions="Auto,Auto,*,3,Auto">
+                                    <!-- Preis über dem Balken -->
+                                    <Label Grid.Row="1"
+                                           Text="CHF"
+                                           FontSize="12" 
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="End" 
+                                           TextColor="White" />
+
+                                    <Label Grid.Row="0"
+                                           Text="{Binding Value, StringFormat='{0:F2}'}" 
+                                           FontSize="12" 
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="End" 
+                                           TextColor="White" />
+
+                                    <!-- Balken -->
+                                    <BoxView Grid.Row="2"
+                                             HeightRequest="{Binding Height}" 
+                                             WidthRequest="20" 
+                                             BackgroundColor="#0747C4" 
+                                             HorizontalOptions="Center" 
+                                             VerticalOptions="End" />
+
+                                    <BoxView Grid.Row="3"
+                                             HeightRequest="3"
+                                             WidthRequest="35" 
+                                             BackgroundColor="#D3D3D3"
+                                             VerticalOptions="End" />
+
+                                    <!-- Datum unterhalb des Balkens (schräg dargestellt) -->
+                                    <Label Grid.Row="4"
+                                           Margin="-10,25,0,25"
+                                           Text="{Binding Date}" 
+                                           FontSize="12" 
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="End" 
+                                           TextColor="White">
+                                        <Label.Rotation>
+                                            60
+                                            <!-- Rotation in Grad -->
+                                        </Label.Rotation>
+                                    </Label>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+                <!-- Sparziel und Fortschritt -->
+                <Label Text="Sparziel:" FontSize="Medium" FontAttributes="Bold" />
+                <Entry Placeholder="Zielbetrag eingeben"
+                       Keyboard="Numeric"
+                       Text="{Binding SavingGoal, Mode=TwoWay}" />
+                <Button Text="Ziel speichern"
+                        Command="{Binding SetSavingGoalCommand}" />
+
+                <Label Text="{Binding CurrentSavings, StringFormat='Aktuelle Einsparungen: CHF {0:F2}'}" 
+                       FontSize="Medium" />
+                <Label Text="{Binding RemainingAmount, StringFormat='Verbleibender Betrag: CHF {0:F2}'}" 
+                       FontSize="Medium" />
+
+                <!-- Fortschrittsanzeige -->
+                <Grid HeightRequest="30" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                    <!-- Hintergrund -->
+                    <BoxView BackgroundColor="#E0E0E0" 
+                             CornerRadius="5"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand" />
+                    <!-- Fortschrittsbalken -->
+                    <BoxView BackgroundColor="#0747C4" 
+                             CornerRadius="5"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="Start"
+                             WidthRequest="{Binding ProgressPercentage, Converter={StaticResource PercentageToWidthConverter}, ConverterParameter=500}" />
+                    <!-- Prozentanzeige -->
+                    <Label Text="{Binding ProgressPercentage, StringFormat='{0:P0}'}" 
+                           FontSize="20" 
+                           FontAttributes="Bold" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="Black" />
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
 </ContentPage>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using SaveUp.Models;
 using System.Text.Json;
+using SaveUp.Services;
 
 namespace SaveUp.Services
 {
@@ -16,16 +17,22 @@ namespace SaveUp.Services
 
         public ObservableCollection<Product> Products { get; } = new();
 
-        private static readonly string FilePath = Path.Combine(FileSystem.AppDataDirectory, "SavedProducts.json");
+        public event EventHandler ProductsChanged = delegate { };
 
-        // Privater Konstruktor für Singleton-Pattern
+        private static readonly string FilePath;
+
+        static SharedData()
+        {
+            var filePathProvider = Microsoft.Maui.Controls.DependencyService.Get<IFilePathProvider>();
+            FilePath = Path.Combine(filePathProvider.GetAppDataDirectory(), "SavedProducts.json");
+        }
+
         private SharedData()
         {
             LoadProducts();
-            Products.CollectionChanged += (s, e) => SaveProducts();
+            Products.CollectionChanged += (s, e) => OnProductsChanged();
         }
 
-        // Lädt gespeicherte Produkte aus der JSON-Datei
         private void LoadProducts()
         {
             if (File.Exists(FilePath))
@@ -44,13 +51,11 @@ namespace SaveUp.Services
                 }
                 catch (Exception ex)
                 {
-                    // Fehler beim Lesen oder Deserialisieren abfangen
                     Console.WriteLine($"Fehler beim Laden der Produkte: {ex.Message}");
                 }
             }
         }
 
-        // Speichert die Produkte in der JSON-Datei
         private void SaveProducts()
         {
             try
@@ -60,9 +65,14 @@ namespace SaveUp.Services
             }
             catch (Exception ex)
             {
-                // Fehler beim Schreiben der Datei abfangen
                 Console.WriteLine($"Fehler beim Speichern der Produkte: {ex.Message}");
             }
+        }
+
+        private void OnProductsChanged()
+        {
+            ProductsChanged.Invoke(this, EventArgs.Empty);
+            SaveProducts();
         }
     }
 }

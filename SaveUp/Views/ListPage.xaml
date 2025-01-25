@@ -59,7 +59,6 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="10" />
                             </Border.StrokeShape>
-
                             <!-- Nur SwipeView anzeigen, wenn es keine Windows-Plattform ist -->
                             <OnPlatform x:TypeArguments="View">
                                 <On Platform="iOS, Android">
@@ -80,9 +79,9 @@
 
                                         <!-- Inhalt des SwipeView -->
                                         <Border Stroke="#0747C4" StrokeThickness="1" Padding="0" BackgroundColor="#2B2B2B" Margin="-1">
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="10" />
-                                        </Border.StrokeShape>
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="10" />
+                                            </Border.StrokeShape>
                                             <Grid ColumnDefinitions="*,Auto" BackgroundColor="#2B2B2B">
                                                 <!-- Sicherstellen, dass der Inhalt einen Hintergrund hat -->
                                                 <!-- Linker Bereich mit Produktdetails -->
@@ -134,10 +133,10 @@
                                                     <RoundRectangle CornerRadius="8" />
                                                 </Border.StrokeShape>
                                                 <Button Text="🗑" 
-                                                            Command="{Binding BindingContext.DeleteProductWithAnimationCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
-                                                            CommandParameter="{Binding}" 
-                                                            BackgroundColor="Transparent" 
-                                                            TextColor="White" />
+                                                        Command="{Binding BindingContext.DeleteProductWithAnimationCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                                                        CommandParameter="{Binding}" 
+                                                        BackgroundColor="Transparent" 
+                                                        TextColor="White" />
                                             </Border>
                                         </Grid>
                                     </Border>

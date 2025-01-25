@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.IO;
+using SaveUp.Services;
 using System.Windows.Input;
 
 namespace SaveUp.ViewModels
@@ -32,6 +33,7 @@ namespace SaveUp.ViewModels
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
+                SharedData.Instance.Products.Clear(); // Sammlung leeren
                 ShowAlert("Erfolg", "Die gespeicherten Daten wurden zurückgesetzt.");
             }
             else
@@ -39,6 +41,7 @@ namespace SaveUp.ViewModels
                 ShowAlert("Hinweis", "Es gibt keine gespeicherten Daten.");
             }
         }
+
 
         private async void ShowAlert(string title, string message)
         {
