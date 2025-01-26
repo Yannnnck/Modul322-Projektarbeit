@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaveUp", "SaveUp\SaveUp.csproj", "{242136F7-4575-42A4-B929-ED0A7C06F85F}"
 EndProject
@@ -13,6 +13,7 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{242136F7-4575-42A4-B929-ED0A7C06F85F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{242136F7-4575-42A4-B929-ED0A7C06F85F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{242136F7-4575-42A4-B929-ED0A7C06F85F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{242136F7-4575-42A4-B929-ED0A7C06F85F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{242136F7-4575-42A4-B929-ED0A7C06F85F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

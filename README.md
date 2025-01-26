@@ -88,9 +88,9 @@ SaveUp
 ├── Properties/                # Projekt- und Assembly-Infos (Standard)
 ├── Converters/                # Enthält Datenkonverter wie PercentageToWidthConverter
 ├──  Documentation/
-│   ├── SaveUp.docx            # Dokumentation
 │   ├── Modul322.pptx          # Präsentation
-│   └── Modul322.xlsx          # Gannt
+│   ├── Modul322.xlsx          # Gannt
+│   └── SaveUp.pdf             # Dokumentation
 ├── Models/                    # Datenmodelle wie Product und ChartData
 ├── Platforms/                 # Plattform-spezifische Implementierungen (Android, iOS, Windows)
 │   ├── Android/
@@ -107,6 +107,7 @@ SaveUp
 │   └── StatisticsPage.xaml
 ├── App.xaml                   # App-Ressourcen und Styles
 └── MauiProgram.cs             # Einstiegspunkt für die .NET MAUI App
+└── SaveUp.Tests/              # Testprojekt
 
 
 ## 🚀 Features in Planung
