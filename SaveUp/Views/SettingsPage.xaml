@@ -6,6 +6,7 @@
              x:DataType="vm:SettingsPageViewModel"
              Title="{Binding PageTitle}">
 
+    <!-- Titel der Seite -->
     <Shell.TitleView>
         <Label Text="{Binding PageTitle}"
                HorizontalOptions="Center"
@@ -13,22 +14,37 @@
                FontSize="25"
                FontAttributes="Bold"/>
     </Shell.TitleView>
+
+    <!-- Verknüpft die Seite mit dem ViewModel -->
     <ContentPage.BindingContext>
         <vm:SettingsPageViewModel />
     </ContentPage.BindingContext>
-    
-    <StackLayout>
-        <Label Text="Welcome to the Settings Page!"
+
+    <!-- Hauptinhalt der Seite -->
+    <StackLayout Padding="20">
+
+        <!-- Platzhaltertext für zukünftige Funktionen -->
+        <Label Text="Coming Soon"
+               FontSize="Large"
                HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
+               VerticalOptions="Center"/>
+
+        <!-- Beschreibung für den Benutzer -->
+        <Label Text="Weitere Einstellungen werden in Zukunft folgen. Im Moment kann man nur die Daten zurücksetzen. Dies dient dazu, Fehler beim Speichern oder Auslesen zu beheben."
+               Padding="25"
+               TextColor="#D3D3D3"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               HorizontalTextAlignment="Center"/>
+
+        <!-- Button, um gespeicherte Daten zurückzusetzen -->
         <Button Text="Daten zurücksetzen"
                 Command="{Binding DeleteDataCommand}"
                 BackgroundColor="Red"
                 TextColor="White"
                 CornerRadius="10"
-                Margin="0,0,0,20"
                 HorizontalOptions="Center"
-                VerticalOptions="Center"
+                VerticalOptions="EndAndExpand"
                 WidthRequest="200" />
 
     </StackLayout>

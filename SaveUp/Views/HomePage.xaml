@@ -6,6 +6,7 @@
              x:DataType="vm:HomePageViewModel"
              Title="{Binding PageTitle}">
 
+    <!-- Titel der Seite -->
     <Shell.TitleView>
         <Label Text="{Binding PageTitle}"
                HorizontalOptions="Center"
@@ -13,64 +14,90 @@
                FontSize="25"
                FontAttributes="Bold"/>
     </Shell.TitleView>
+
+    <!-- Bindet die Seite an das ViewModel -->
     <ContentPage.BindingContext>
         <vm:HomePageViewModel/>
     </ContentPage.BindingContext>
 
-    <Grid>
-        <!-- Definiere 3 Spalten -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10*" />
-            <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="10*" />
-        </Grid.ColumnDefinitions>
+    <!-- Hauptinhalt der Seite mit ScrollView -->
+    <ScrollView>
+        <Grid Padding="20" RowDefinitions="Auto, Auto, Auto, *, Auto">
+            <!-- Zeilen sind definiert: 
+                 Auto für dynamische Höhe, 
+                 * für flexible Höhe basierend auf dem verfügbaren Platz -->
 
-        <!-- Definiere 7 Zeilen -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="130" />
-            <RowDefinition Height="20" />
-            <RowDefinition Height="130" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="130" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="130" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+            <!-- App-Icon -->
+            <Image Grid.Row="0"
+                   Source="appicon_homepage_alt.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   HeightRequest="200"
+                   WidthRequest="200" />
+            <!-- Das Icon der App wird zentriert angezeigt -->
 
-        <Image Source="appicon_homepage.png"
-               Grid.Row="1" Grid.Column="1"
-               HorizontalOptions="Center"
-               VerticalOptions="Center"
-               HeightRequest="250"
-               WidthRequest="250" />
+            <!-- Begrüßung -->
+            <Label Grid.Row="1"
+                   Text="Willkommen bei SaveUp!"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   Margin="0,15,0,5" />
+            <!-- Begrüßungsnachricht in fetter Schrift -->
 
-        <Label Text="Willkommen bei SaveUp"
-               Grid.Row="3" Grid.Column="1"
-               FontSize="24"
-               FontAttributes="Bold" />
+            <!-- Einführungstext -->
+            <Label Grid.Row="2"
+                   Text="SaveUp hilft Ihnen, Geld zu sparen, indem Sie kleine tägliche Ausgaben wie Kaffee oder Snacks vermeiden. Erfassen Sie Ihre gesparten Beträge, verfolgen Sie Ihren Fortschritt und erreichen Sie Ihre Sparziele!"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="Medium"
+                   TextColor="#D3D3D3"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,5,0,15" />
+            <!-- Beschreibung der App und wie sie funktioniert -->
 
-        <Label Text="Verwalte deine Finanzen einfach und effizient"
-               Grid.Row="4" Grid.Column="1"
-               FontSize="18" />
+            <!-- Betrag der letzten 30 Tage -->
+            <Border Grid.Row="3"
+                    BackgroundColor="#0747C4"
+                    Padding="15"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Margin="0,10,0,10">
+                <!-- Hintergrundfarbe und Padding für den Bereich -->
 
-        <Label Text="Deine aktuellen Ausgaben:"
-               Grid.Row="5" Grid.Column="1"
-               FontSize="20"
-               FontAttributes="Bold" />
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <!-- Abgerundete Ecken für den Rahmen -->
 
-        <Label Text="Schau dir deine Ausgaben und Einnahmen an"
-               Grid.Row="6" Grid.Column="1"
-               FontSize="18" />
+                <StackLayout>
+                    <Label Text="Gespart in den letzten 30 Tagen:"
+                           HorizontalOptions="Center"
+                           FontSize="Medium"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <!-- Beschriftung für den gesparten Betrag -->
 
-        <Label Text="Klicke unten, um loszulegen!"
-               Grid.Row="7" Grid.Column="1"
-               FontSize="20"
-               FontAttributes="Bold" />
+                    <Label Text="{Binding TotalSavingsLast30Days, StringFormat='CHF {0:F2}'}"
+                           HorizontalOptions="Center"
+                           FontSize="Large"
+                           FontAttributes="Bold"
+                           TextColor="#D3D3D3" />
+                    <!-- Bindung an den Betrag der letzten 30 Tage -->
+                </StackLayout>
+            </Border>
 
-        <Label Text="Dein Weg zu finanzieller Freiheit beginnt hier."
-               Grid.Row="8" Grid.Column="1"
-               FontSize="18"
-               FontAttributes="Bold" />
-    </Grid>
+            <!-- Footer oder Hinweis -->
+            <Label Grid.Row="4"
+                   Text="Vielen Dank, dass Sie SaveUp verwenden. Viel Erfolg beim Sparen!"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="Small"
+                   TextColor="#D3D3D3"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10,0,0" />
+            <!-- Eine motivierende Abschlussnachricht -->
+        </Grid>
+    </ScrollView>
 </ContentPage>

@@ -7,6 +7,7 @@
              x:DataType="vm:InputPageViewModel"
              Title="{Binding PageTitle}">
 
+    <!-- Titel der Seite -->
     <Shell.TitleView>
         <Label Text="{Binding PageTitle}"
                HorizontalOptions="Center"
@@ -15,47 +16,85 @@
                FontAttributes="Bold"/>
     </Shell.TitleView>
 
+    <!-- Bindet die Seite an das zugehörige ViewModel -->
     <ContentPage.BindingContext>
         <vm:InputPageViewModel />
     </ContentPage.BindingContext>
 
+    <!-- Hauptinhalt der Seite -->
     <ContentPage.Content>
-        <Grid Padding="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="100" />
-            </Grid.ColumnDefinitions>
+        <!-- ScrollView für besseren Zugriff auf Inhalte bei kleineren Bildschirmen -->
+        <ScrollView>
+            <Grid Padding="20" ColumnDefinitions="200,*,100" RowDefinitions="Auto,Auto,*,*,Auto">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+                <!-- Eingabefelder für Produktname, Preis und Kommentar -->
+                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Stroke="#0747C4" StrokeThickness="2" Padding="10" BackgroundColor="#2B2B2B">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout>
+                        <!-- Produktname und Preis Eingabefelder -->
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto" Margin="0,0,0,10">
+                            <Entry Placeholder="Produktname"
+                                   Text="{Binding ProductName}"
+                                   Grid.Column="0"
+                                   WidthRequest="200"
+                                   HorizontalOptions="Start" />
+                            <Entry Placeholder="0.00 CHF"
+                                   Text="{Binding Price}"
+                                   Keyboard="Numeric"
+                                   Grid.Column="1"
+                                   WidthRequest="100"
+                                   HorizontalOptions="End" />
+                        </Grid>
 
-            <!-- Produktname, Preis und Kommentar mit Box -->
-            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Stroke="#0747C4" StrokeThickness="2" Padding="10" BackgroundColor="#2B2B2B">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="10" />
-                </Border.StrokeShape>
-                <VerticalStackLayout>
-                    <!-- Produktname und Preis -->
-                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto" Margin="0,0,0,10">
-                        <Entry Placeholder="Produktname" Text="{Binding ProductName}" Grid.Column="0" WidthRequest="200" HorizontalOptions="Start"/>
-                        <Entry Placeholder="0.00 CHF" Text="{Binding Price}" Keyboard="Numeric" Grid.Column="1" WidthRequest="100" HorizontalOptions="End" />
-                    </Grid>
+                        <!-- Kommentar Eingabefeld -->
+                        <Editor Placeholder="Kommentar"
+                                Text="{Binding Comment}"
+                                HeightRequest="150" />
+                    </VerticalStackLayout>
+                </Border>
 
-                    <!-- Kommentar -->
-                    <Editor Placeholder="Kommentar" Text="{Binding Comment}" HeightRequest="150" />
+                <!-- Zusätzlicher Bereich für Informationen und Motivation -->
+                <VerticalStackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Spacing="10" Padding="10" HorizontalOptions="Center" VerticalOptions="EndAndExpand">
+                    <!-- Anzeige der Gesamtersparnis der letzten 30 Tage -->
+                    <Label Text="Gespart in den letzten 30 Tagen:"
+                           FontSize="Medium"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding TotalSavingsLast30Days, StringFormat='CHF {0:F2}'}"
+                           FontSize="Large"
+                           FontAttributes="Bold"
+                           TextColor="Green"
+                           HorizontalTextAlignment="Center" />
+
+                    <!-- Hinweis und motivierende Botschaft -->
+                    <Label Text="Tipp: Notieren Sie sich jeden Verzicht, um Ihr Sparziel schneller zu erreichen!"
+                           FontSize="Small"
+                           TextColor="#D3D3D3"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,5,0,0" />
+                    <Label Text="Jeder kleine Beitrag bringt Sie näher zu Ihrem Ziel!"
+                           FontSize="Small"
+                           TextColor="#D3D3D3"
+                           HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
-            </Border>
 
-            <!-- Abbrechen und Bestätigen -->
-            <HorizontalStackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Spacing="30" HorizontalOptions="Center">
-                <Button Text="Abbrechen" Command="{Binding ClearCommand}" BackgroundColor="Red" TextColor="White" WidthRequest="120" />
-                <Button Text="Bestätigen" Command="{Binding SaveCommand}" BackgroundColor="Green" TextColor="White" WidthRequest="120" />
-            </HorizontalStackLayout>
-        </Grid>
+                <!-- Buttons für Abbrechen und Bestätigen -->
+                <HorizontalStackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Spacing="30" HorizontalOptions="Center">
+                    <Button Text="Abbrechen"
+                            Command="{Binding ClearCommand}"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            WidthRequest="120" />
+                    <Button Text="Bestätigen"
+                            Command="{Binding SaveCommand}"
+                            BackgroundColor="Green"
+                            TextColor="White"
+                            WidthRequest="120" />
+                </HorizontalStackLayout>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

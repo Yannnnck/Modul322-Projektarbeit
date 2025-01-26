@@ -7,6 +7,7 @@
              x:DataType="vm:ListPageViewModel"
              Title="{Binding PageTitle}">
 
+    <!-- Titel der Seite -->
     <Shell.TitleView>
         <Label Text="{Binding PageTitle}"
                HorizontalOptions="Center"
@@ -15,20 +16,27 @@
                FontAttributes="Bold"/>
     </Shell.TitleView>
 
+    <!-- Bindet die Seite an das zugehörige ViewModel -->
     <ContentPage.BindingContext>
         <vm:ListPageViewModel />
     </ContentPage.BindingContext>
 
+    <!-- Hauptinhalt der Seite -->
     <ContentPage.Content>
         <Grid Padding="20">
+            <!-- Definiert die Struktur der Seite mit drei Zeilen -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <!-- Filterleiste -->
                 <RowDefinition Height="*" />
+                <!-- Produktliste -->
                 <RowDefinition Height="Auto" />
+                <!-- Gesamtsumme und Buttons -->
             </Grid.RowDefinitions>
 
-            <!-- Filterleiste -->
+            <!-- Filterleiste für Suche und Datum -->
             <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,10">
+                <!-- Suchfeld -->
                 <Entry Grid.Column="0"
                        Placeholder="Suche..." 
                        Text="{Binding SearchText}" 
@@ -36,12 +44,14 @@
                        TextColor="White"
                        PlaceholderColor="Gray"
                        VerticalOptions="Center" />
+                <!-- Startdatum -->
                 <DatePicker Grid.Column="1"
                             Date="{Binding StartDate}" 
                             BackgroundColor="#2B2B2B" 
                             TextColor="White"
                             Margin="5,0"
                             HorizontalOptions="End" />
+                <!-- Enddatum -->
                 <DatePicker Grid.Column="2"
                             Date="{Binding EndDate}" 
                             BackgroundColor="#2B2B2B" 
@@ -54,18 +64,20 @@
             <CollectionView Grid.Row="1" ItemsSource="{Binding FilteredProducts}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Product">
-                        <!-- Abgerundeter Rahmen für SwipeView -->
+                        <!-- Rahmen um jeden Eintrag -->
                         <Border Stroke="#0747C4" StrokeThickness="1" BackgroundColor="#2B2B2B" Margin="0,0,0,10">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="10" />
                             </Border.StrokeShape>
-                            <!-- Nur SwipeView anzeigen, wenn es keine Windows-Plattform ist -->
+
+                            <!-- Plattformübergreifender Inhalt -->
                             <OnPlatform x:TypeArguments="View">
                                 <On Platform="iOS, Android">
+                                    <!-- SwipeView für Mobile Plattformen -->
                                     <SwipeView BackgroundColor="Transparent">
-                                        <!-- Hintergrund des SwipeView auf Transparent setzen -->
                                         <SwipeView.RightItems>
                                             <SwipeItems Mode="Execute">
+                                                <!-- Löschen-Button -->
                                                 <SwipeItem Text="Löschen"
                                                            BackgroundColor="Red"
                                                            Command="{Binding BindingContext.DeleteProductWithAnimationCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
@@ -77,25 +89,23 @@
                                             </SwipeItems>
                                         </SwipeView.RightItems>
 
-                                        <!-- Inhalt des SwipeView -->
+                                        <!-- Produktdetails -->
                                         <Border Stroke="#0747C4" StrokeThickness="1" Padding="0" BackgroundColor="#2B2B2B" Margin="-1">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="10" />
                                             </Border.StrokeShape>
                                             <Grid ColumnDefinitions="*,Auto" BackgroundColor="#2B2B2B">
-                                                <!-- Sicherstellen, dass der Inhalt einen Hintergrund hat -->
-                                                <!-- Linker Bereich mit Produktdetails -->
+                                                <!-- Linker Bereich: Details -->
                                                 <VerticalStackLayout Grid.Column="0" Spacing="5" Padding="10">
                                                     <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White" Margin="0,0,0,-3" />
                                                     <Label Text="{Binding Comment}" FontSize="12" TextColor="Gray" Margin="0,0,0,3" />
                                                     <Grid ColumnDefinitions="*,Auto">
-                                                        <Label Grid.Column="0" Text="{Binding DateAdded}" FontSize="10" VerticalOptions="End"  TextColor="Gray" />
+                                                        <Label Grid.Column="0" Text="{Binding DateAdded}" FontSize="10" VerticalOptions="End" TextColor="Gray" />
                                                         <Label Grid.Column="1" Text="{Binding Price, StringFormat='CHF {0:F2}'}" FontAttributes="Bold" HorizontalOptions="End" TextColor="White" />
                                                     </Grid>
                                                 </VerticalStackLayout>
-
-                                                <!-- Rechter Bereich mit zusätzlichem Löschen-Button -->
-                                                <Border Grid.Column="1" Stroke="Red" StrokeThickness="2" BackgroundColor="Red" VerticalOptions="Fill" HorizontalOptions="End"  Margin="5,0,1.3,1">
+                                                <!-- Rechter Bereich: Löschen-Button -->
+                                                <Border Grid.Column="1" Stroke="Red" StrokeThickness="2" BackgroundColor="Red" VerticalOptions="Fill" HorizontalOptions="End" Margin="5,0,1.3,1">
                                                     <Border.StrokeShape>
                                                         <RoundRectangle CornerRadius="8" />
                                                     </Border.StrokeShape>
@@ -109,26 +119,22 @@
                                         </Border>
                                     </SwipeView>
                                 </On>
+                                <!-- Windows spezifischer Inhalt -->
                                 <On Platform="WinUI">
-                                    <!-- Inhalt der Windows Anzeige -->
                                     <Border Stroke="#0747C4" StrokeThickness="1" Padding="0" BackgroundColor="#2B2B2B" Margin="-1">
                                         <Border.StrokeShape>
                                             <RoundRectangle CornerRadius="10" />
                                         </Border.StrokeShape>
                                         <Grid ColumnDefinitions="*,Auto" BackgroundColor="#2B2B2B">
-                                            <!-- Sicherstellen, dass der Inhalt einen Hintergrund hat -->
-                                            <!-- Linker Bereich mit Produktdetails -->
                                             <VerticalStackLayout Grid.Column="0" Spacing="5" Padding="10">
                                                 <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White" Margin="0,0,0,-3" />
                                                 <Label Text="{Binding Comment}" FontSize="12" TextColor="Gray" Margin="0,0,0,3" />
                                                 <Grid ColumnDefinitions="*,Auto">
-                                                    <Label Grid.Column="0" Text="{Binding DateAdded}" FontSize="10" VerticalOptions="End"  TextColor="Gray" />
+                                                    <Label Grid.Column="0" Text="{Binding DateAdded}" FontSize="10" VerticalOptions="End" TextColor="Gray" />
                                                     <Label Grid.Column="1" Text="{Binding Price, StringFormat='CHF {0:F2}'}" FontAttributes="Bold" HorizontalOptions="End" TextColor="White" />
                                                 </Grid>
                                             </VerticalStackLayout>
-
-                                            <!-- Rechter Bereich mit zusätzlichem Löschen-Button -->
-                                            <Border Grid.Column="1" Stroke="Red" StrokeThickness="2" BackgroundColor="Red" VerticalOptions="Fill" HorizontalOptions="End"  Margin="5,0.4,0,0">
+                                            <Border Grid.Column="1" Stroke="Red" StrokeThickness="2" BackgroundColor="Red" VerticalOptions="Fill" HorizontalOptions="End" Margin="5,0.4,0,0">
                                                 <Border.StrokeShape>
                                                     <RoundRectangle CornerRadius="8" />
                                                 </Border.StrokeShape>
