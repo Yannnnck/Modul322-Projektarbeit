@@ -83,32 +83,7 @@ SaveUp ist eine .NET MAUI Anwendung, die Ihnen hilft, kleine Einsparungen im All
      ![alt text](image-4.png)
 
 ## 📂 Projektstruktur
-SaveUp
-├── Abhängigkeiten/            # Externe Abhängigkeiten (keine Änderungen erforderlich)
-├── Properties/                # Projekt- und Assembly-Infos (Standard)
-├── Converters/                # Enthält Datenkonverter wie PercentageToWidthConverter
-├──  Documentation/
-│   ├── Modul322.pptx          # Präsentation
-│   ├── Modul322.xlsx          # Gannt
-│   ├── SaveUp.docx            # Dokumentation
-│   └── SaveUp.pdf             # Dokumentation
-├── Models/                    # Datenmodelle wie Product und ChartData
-├── Platforms/                 # Plattform-spezifische Implementierungen (Android, iOS, Windows)
-│   ├── Android/
-│   ├── iOS/
-│   └── Windows/
-├── Resources/                 # App-Icons, Styles und andere Ressourcen
-├── Services/                  # Service-Klassen wie SharedData und FilePathProvider
-├── ViewModels/                # ViewModel-Klassen für jede Seite
-├── Views/                     # XAML-Ansichten für die Seiten
-│   ├── HomePage.xaml
-│   ├── InputPage.xaml
-│   ├── ListPage.xaml
-│   ├── SettingsPage.xaml
-│   └── StatisticsPage.xaml
-├── App.xaml                   # App-Ressourcen und Styles
-└── MauiProgram.cs             # Einstiegspunkt für die .NET MAUI App
-└── SaveUp.Tests/              # Testprojekt
+![alt text](image-5.png)
 
 
 ## 🚀 Features in Planung
